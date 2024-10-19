@@ -546,7 +546,7 @@ elif section == "Data Collection and Cleaning":
     """)
 
 # Load your dataset
-data = pd.read_csv('/workspaces/dmproject/station 1611400dataaset.csv', parse_dates=['Date', 'Time (GMT)'])
+data = pd.read_csv('station 1611400dataaset.csv', parse_dates=['Date', 'Time (GMT)'])
 
 # Ensure that 'Date' and 'Time (GMT)' columns exist and are properly formatted as strings
 data['Date'] = data['Date'].astype(str)
