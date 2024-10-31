@@ -438,12 +438,13 @@ if section == "Introduction":
     
     # Collapsible Q&A format for introduction
     collapsible_section("What are the primary causes of sea level rise?", """
-    The primary causes of sea level rise associated with climate change are the thermal expansion of seawater and the melting of ice from glaciers and polar regions.
+    The primary causes of sea level rise linked to climate change are the thermal expansion of seawater and the melting of ice from glaciers and polar regions. As global temperatures increase, seawater warms and expands, taking up more space, which contributes significantly to the rising levels observed in oceans worldwide. This phenomenon, known as thermal expansion, accounts for about half of the observed sea level rise in recent decades. Additionally, higher temperatures accelerate the melting of glaciers and ice sheets in polar regions like Greenland and Antarctica. When ice from these land-based sources melts, it flows into the ocean, directly increasing sea levels. This melting is particularly concerning because ice sheets hold vast amounts of water; even small increases in melt rates can lead to considerable changes in sea levels over time. Seasonal changes, particularly in the Arctic, have also shown that ice is melting at an unprecedented rate, affecting habitats and increasing the flow of freshwater into the sea. Rising sea levels have widespread impacts on coastal ecosystems, contributing to shoreline erosion, saltwater intrusion into freshwater sources, and the loss of habitat for marine life. Combined, thermal expansion and ice melt present a complex challenge, as they not only contribute to rising waters but also indicate ongoing changes in Earth’s climate systems. Addressing these root causes is essential to managing and potentially mitigating future sea level rise.
     """)
 
     collapsible_section("What are the effects of sea level rise?", """
-    Coastal erosion, seawater intrusion, habitat loss, and community displacement are some of its effects. It may result in major harm to infrastructure and higher adoption costs from an economic perspective.
-    """)
+    Sea level rise has a range of significant effects on both natural environments and human communities. Coastal erosion is one of the most visible impacts, as rising waters gradually wear away shorelines, threatening properties and natural habitats. Seawater intrusion is another serious concern, where saltwater encroaches into freshwater aquifers, jeopardizing drinking water supplies and agricultural lands. Habitat loss occurs as rising seas submerge coastal wetlands, mangroves, and estuaries, which serve as critical ecosystems for diverse marine and bird species. This environmental change disrupts ecosystems, leading to declines in biodiversity and impacting food chains.
+
+    For communities near coastlines, rising sea levels can lead to forced relocation and displacement as homes, schools, and businesses are threatened or submerged. This creates significant social challenges, as entire communities may need to move, severing historical ties to land and culture. From an economic standpoint, sea level rise leads to increased costs for adapting infrastructure, such as building seawalls, improving drainage systems, and elevating structures. It also heightens the risk of major damage to roads, bridges, ports, and utilities during extreme weather events. In total, the economic and social burdens of sea level rise are vast, and addressing them requires proactive planning and adaptation to protect vulnerable populations and ecosystems.    """)
 
     collapsible_section("Why is this analysis important?", """
     The Analysis of Sea Level Rise is significant because it directly addresses the ongoing global challenge of climate change, particularly highlighting the increasing rates of sea level rise. More than 40% of the global population lives within 100 kilometers of coastlines, making it crucial to understand the implications.
@@ -455,7 +456,16 @@ if section == "Introduction":
     """)
     
     collapsible_section("Questions which we aim to answer through our project?", """
-    The Analysis of Sea Level Rise is significant because it directly addresses the ongoing global challenge of climate change, particularly highlighting the increasing rates of sea level rise. More than 40% of the global population lives within 100 kilometers of coastlines, making it crucial to understand the implications.
+    1. What is the trend of sea level rise over the past few years in the monitored location?
+    2. How do seasonal changes affect water levels in the region?
+    3. What are the highest and lowest water levels recorded, and what factors might explain these extremes?
+    4. How frequently do extreme high tides (above MHHW) occur, and are they becoming more common?
+    5. Is there a noticeable difference between high and low tides (MHW and MLW), and is this difference increasing?
+    6. How does the recorded Mean Sea Level (MSL) compare to historical MSL averages?
+    7. What is the average tidal range, and does it show any signs of increasing or decreasing?
+    8. Are there particular months or seasons where the risk of extreme water levels is highest?
+    9. Does the data indicate any unusual water level anomalies, and what might be the cause?
+    10. How might future sea level rise impact nearby coastal infrastructure and ecosystems if current trends continue?
     """)
 
     # Image section without `class_`
