@@ -448,12 +448,14 @@ if section == "Introduction":
     collapsible_section("Why is this analysis important?", """
     The Analysis of Sea Level Rise is significant because it directly addresses the ongoing global challenge of climate change, particularly highlighting the increasing rates of sea level rise. More than 40% of the global population lives within 100 kilometers of coastlines, making it crucial to understand the implications.
     """)
+    
 
     collapsible_section("What has been done so far?", """
-    - Researched different types of attributes needed for developing data models.
-    - Explored various datasets to understand the structure, including year and rise in sea level.
-    - Collected datasets and are working on curating them for further analysis.
-    - Major challenge: Collecting datasets for different locations.
+    Our team has collectively researched various attributes needed for developing data models, focusing on identifying the ones that are most crucial for our project. Together, we examined factors that might influence sea level rise, such as temperature changes, glacial melt rates, and atmospheric conditions. We also explored multiple datasets to understand their structures and find the most relevant data points, especially those capturing year-to-year trends in sea levels. As a team, we gathered valuable datasets, which we are now curating to ensure they are ready for analysis. This process has involved extensive filtering, cleaning, and standardizing, as the datasets came from diverse sources with varying levels of detail. A significant challenge we faced was in obtaining location-specific datasets, as sea level data differs across regions, making it essential to merge information from multiple sources while ensuring compatibility. Combining these datasets without losing critical information has been both complex and time-intensive. By working through these challenges together, we aim to build an accurate, comprehensive model that reflects global and regional trends in sea level rise. Our collaborative efforts are setting a strong foundation for valuable insights into how various factors impact sea levels across different locations.
+    """)
+    
+    collapsible_section("Questions which we aim to answer through our project?", """
+    The Analysis of Sea Level Rise is significant because it directly addresses the ongoing global challenge of climate change, particularly highlighting the increasing rates of sea level rise. More than 40% of the global population lives within 100 kilometers of coastlines, making it crucial to understand the implications.
     """)
 
     # Image section without `class_`
