@@ -547,18 +547,78 @@ elif section == "Data Collection and Cleaning":
         # Image inside the collapsible section for dataset description
         st.image("dataset_image.jpeg", caption="Dataset Snapshot", width=400, use_column_width='auto')
 
-    # Collapsible section for handling missing values
+
     collapsible_section("Handling Missing Values", """
-    - Checked for missing values and imputated with mean of the attribute.
+Handling missing values is a critical preprocessing step to ensure that the dataset is both complete and consistent for model training. Missing values often arise due to data collection issues, incomplete records, or external factors, and their presence can lead to errors or biases that negatively impact model performance.
+
+
+For **numerical features** (e.g., tide metrics like `MHHW (ft)` or `MLLW (ft)`), missing values are imputed using the **mean** of the respective columns. This approach is effective when the data distribution is relatively symmetrical and free from extreme outliers. Using the mean ensures that the imputed value reflects the central tendency of the data, preserving feature scaling and overall dataset integrity.
+
+
+For **categorical or non-numeric columns** (e.g., `Date`, `Time (GMT)`), missing values are filled with the **most frequent value (mode)** of the column. The mode represents the most common category or value, ensuring that the imputation process aligns with the majority of the data. For example, if most records for `Time (GMT)` are at midnight (`00:00`), it is reasonable to replace missing time values with this common occurrence.
+
+---
+
+This dual-strategy approach effectively handles missing data in both numerical and non-numerical features, ensuring that:
+1. **Statistical integrity** is maintained for numerical data.
+2. **Categorical consistency** is preserved for non-numerical data.
+
+By addressing missing values, the dataset becomes fully prepared for subsequent preprocessing steps such as feature scaling, encoding, and model training, reducing the risk of biases or errors from incomplete data.
     """)
 
     # Collapsible section for combining date and time columns
-    collapsible_section("Combine Date and Time Column", """
-    - Combined two different date and time columns into a single DateTime column.
+    # Collapsible section for feature engineering
+    collapsible_section("Feature Engineering", """
+Feature engineering transforms raw data into meaningful features that can improve model performance and predictive power. It involves creating new features, extracting useful information, and restructuring the dataset to make it more suitable for machine learning models. Here’s how feature engineering was applied:
+
+**Temporal features**, such as `Date` and `Time (GMT)`, were transformed to capture cyclical patterns and provide more meaningful representations:
+
+1. **Extracting Components**:
+   - From `Date`: Components like **Month** and **Day** were extracted to account for seasonal trends and monthly variations in tidal levels.
+   - From `Time (GMT)`: The **hour of the day** was extracted to capture daily periodicity, as tides often follow predictable diurnal cycles.
+
+2. **Cyclical Encoding**:
+   - Features like `Time (GMT)` were encoded into cyclical features using sine and cosine transformations:
+     - `Sin_Hour = sin(2π * Time / 24)`
+     - `Cos_Hour = cos(2π * Time / 24)`
+   - This transformation ensures that the time representation is cyclic (e.g., 23:00 is closer to 00:00 than to 12:00), which is critical for distance-based models like k-NN or neural networks.
+
+    """)
+
+    # Collapsible section for feature scaling
+    # Collapsible section for feature scaling
+    collapsible_section("Feature Scaling", """
+Feature scaling ensures that numerical features are on a similar scale, which is especially important for machine learning models sensitive to feature magnitudes.
+
+**Standardization**
+1. Numerical features (e.g., tide metrics like `MHHW (ft)` and `MLLW (ft)`) were standardized using **z-score normalization**. This technique adjusts the features to have a mean of 0 and a standard deviation of 1, ensuring uniform scaling across all numerical variables.
+
+2. Standardization was particularly applied for models such as:
+   - **Distance-based models (k-NN)**: Ensures features contribute equally to distance calculations.
+   - **Neural networks (LSTM)**: Prevents gradients from being dominated by features with larger magnitudes.
+
+By applying feature scaling, the dataset becomes well-prepared for model training, avoiding potential biases and ensuring effective feature representation for models sensitive to scale.
+    """)
+
+
+    # Collapsible section for splitting the data
+    collapsible_section("Splitting the Data", """
+Splitting the data is a critical step in the machine learning workflow to evaluate model performance and ensure generalizability to unseen data.
+
+**Train-Test Split**
+1. Divided the dataset into **training** and **testing** sets, typically using an 80-20 split.
+2. Ensured that no data leakage occurred between the training and testing phases, maintaining the integrity of the evaluation process.
+
+**Validation Data**
+1. For some models (e.g., **LSTM**), a portion of the training data was further set aside as a **validation set**. This was used for:
+   - **Early stopping**: To prevent overfitting by monitoring model performance during training.
+   - **Hyperparameter tuning**: To optimize the model parameters effectively.
+
+By carefully splitting the data, the model evaluation process remains robust, allowing for accurate performance assessment while minimizing the risk of overfitting or data contamination.
     """)
 
 # Load your dataset
-data = pd.read_csv('station 1611400dataaset.csv', parse_dates=['Date', 'Time (GMT)'])
+data = pd.read_csv('combined_data_5_stations', parse_dates=['Date', 'Time (GMT)'])
 
 # Ensure that 'Date' and 'Time (GMT)' columns exist and are properly formatted as strings
 data['Date'] = data['Date'].astype(str)
@@ -572,87 +632,231 @@ new_dataset = data.drop(columns=['Date', 'Time (GMT)'])
 
 # Streamlit Section for Data Visualizations
 # Data Visualizations Section
+# if section == "Data Visualizations":
+#     st.header("Data Visualizations")
+
+#     # Tidal Levels Over Time
+#     st.subheader("Tidal Levels Over Time")
+#     fig1, ax1 = plt.subplots()
+#     data.plot(x='Datetime', y=['Highest', 'Lowest (ft)'], kind='line', ax=ax1)
+#     plt.title('Tidal Levels Over Time')
+#     plt.xlabel('Datetime')
+#     plt.ylabel('Tide Levels (ft)')
+#     st.pyplot(fig1)
+
+#     # Frequency Distribution of Mean Sea Level (ft)
+#     st.subheader("Frequency Distribution of Mean Sea Level (ft)")
+#     fig2, ax2 = plt.subplots()
+#     data['MSL (ft)'].plot(kind='hist', bins=20, color='beige', edgecolor='black', ax=ax2)
+#     plt.title('Frequency Distribution of Mean Sea Level (ft)')
+#     plt.xlabel('MSL (ft)')
+#     plt.ylabel('Frequency')
+#     st.pyplot(fig2)
+
+#     # Highest vs. Lowest Tide
+#     st.subheader("Highest vs. Lowest Tide")
+#     fig3, ax3 = plt.subplots()
+#     data.plot.scatter(x='Highest', y='Lowest (ft)', ax=ax3)
+#     plt.title('Highest Tide vs Lowest Tide')
+#     plt.xlabel('Highest Tide (ft)')
+#     plt.ylabel('Lowest Tide (ft)')
+#     st.pyplot(fig3)
+
+#     # Tidal Components Over Time
+#     st.subheader("Tidal Components Over Time")
+#     fig4, ax4 = plt.subplots()
+#     data.plot(x='Datetime', y=['MHHW (ft)', 'MHW (ft)', 'MLW (ft)'], ax=ax4)
+#     plt.title('Mean Water Levels Over Time')
+#     plt.xlabel('Datetime')
+#     plt.ylabel('Mean Water Level (ft)')
+#     st.pyplot(fig4)
+
+#     # # Identifying Cyclic or Seasonal Behavior
+#     # st.subheader("Identifying Cyclic or Seasonal Behavior")
+#     # fig5, ax5 = plt.subplots()
+#     # pd.plotting.autocorrelation_plot(data['Highest'], ax=ax5)
+#     # plt.title('Autocorrelation Plot of Highest Tide')
+#     # st.pyplot(fig5)
+
+#     # Detecting Seasonality and Trends Over Time
+#     st.subheader("Detecting Seasonality and Trends Over Time")
+#     fig6, ax6 = plt.subplots()
+#     pd.plotting.lag_plot(data['Highest'], ax=ax6)
+#     plt.title('Lag Plot of Highest Tide')
+#     st.pyplot(fig6)
+
+#     from statsmodels.graphics.tsaplots import plot_acf
+
+# #     Identifying Cyclic or Seasonal Behavior
+# #     st.subheader("Identifying Cyclic or Seasonal Behavior")
+# #     fig5, ax5 = plt.subplots()
+# #     plot_acf(data['Highest'], ax=ax5)
+# #     plt.title('Autocorrelation Plot of Highest Tide')
+# #     st.pyplot(fig5)
+#     # Mean Tide Levels by Month
+#     st.subheader("Mean Tide Levels by Month")
+#     data['Month'] = data['Datetime'].dt.month
+#     fig8, ax8 = plt.subplots()
+#     data.groupby('Month')['MTL (ft)'].mean().plot(kind='bar', ax=ax8)
+#     plt.title('Mean Tide Level by Month')
+#     plt.xlabel('Month')
+#     plt.ylabel('Mean Tide Level (ft)')
+#     st.pyplot(fig8)
+
+#     # Tidal Levels with Seasonal Indicators
+#     st.subheader("Tidal Levels with Seasonal Indicators")
+#     data['Season'] = data['Datetime'].dt.month % 12 // 3 + 1
+#     fig9, ax9 = plt.subplots()
+#     sns.lineplot(x='Datetime', y='Highest', hue='Season', data=data, ax=ax9)
+#     plt.title('Highest Tide Over Time by Season')
+#     plt.xlabel('Datetime')
+#     plt.ylabel('Highest Tide (ft)')
+#     st.pyplot(fig9)
+# Streamlit Section for Data Visualizations
+# Data Visualizations Section
 if section == "Data Visualizations":
     st.header("Data Visualizations")
 
-    # Tidal Levels Over Time
-    st.subheader("Tidal Levels Over Time")
+    # Ensure date formatting and additional features
+    data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
+    data['Month'] = data['Date'].dt.month
+    data['Year'] = data['Date'].dt.year
+
+    # Visualization 1: Time Series of Average Highest Water Levels by Month-Year
+    st.subheader("Time Series of Average Highest Water Levels by Month-Year")
+    st.write("""
+    The time series visualization depicts the variation in average highest water levels over time, spanning from 1980 to 2025. The plot illustrates a general upward trend, indicating that the highest tide levels have progressively increased over the years, with noticeable fluctuations. Individual data points in the above plot have revealed both seasonal and irregular variations, reflecting periodic spikes and dips. This trend helps us in understanding potential long-term changes in water level patterns, which are likely influenced by environmental or climatic factors.
+    """)
+    monthly_data = data.groupby(['Year', 'Month'])['Highest'].mean().reset_index()
+    monthly_data['Month-Year'] = pd.to_datetime(monthly_data[['Year', 'Month']].assign(Day=1))
+
     fig1, ax1 = plt.subplots()
-    data.plot(x='Datetime', y=['Highest', 'Lowest (ft)'], kind='line', ax=ax1)
-    plt.title('Tidal Levels Over Time')
-    plt.xlabel('Datetime')
-    plt.ylabel('Tide Levels (ft)')
+    sns.lineplot(data=monthly_data, x='Month-Year', y='Highest', marker='o', label='Average Highest', ax=ax1)
+    ax1.set_title('Time Series of Average Highest Water Levels by Month-Year')
+    ax1.set_xlabel('Month-Year')
+    ax1.set_ylabel('Highest Water Levels (ft)')
+    plt.xticks(rotation=45)
+    plt.grid(True)
     st.pyplot(fig1)
 
-    # Frequency Distribution of Mean Sea Level (ft)
-    st.subheader("Frequency Distribution of Mean Sea Level (ft)")
+    # New Visualization: Time Series of Average MTL (ft) by Month-Year
+    st.subheader("Time Series of Average MTL (ft) by Month-Year")
+    st.write("""
+    The time series plot of Mean Tide Level (MTL) over time illustrates trends and variability in tidal behavior across years. From 1980 to 2025, the plot shows a gradual upward trend, indicating a steady increase in MTL (ft) over the decades. This suggests possible long-term environmental changes, such as rising sea levels. Additionally, the data points display significant variability within each month or year, reflecting natural fluctuations in tidal patterns. Periods of higher variability, particularly after 2010, may suggest more dynamic tidal activity in recent years. This visualization underscores the importance of incorporating temporal trends when building predictive models for tidal behavior.
+    """)
+    monthly_mtl_data = data.groupby(['Year', 'Month'])['MTL (ft)'].mean().reset_index()
+    monthly_mtl_data['Month-Year'] = pd.to_datetime(monthly_mtl_data[['Year', 'Month']].assign(Day=1))
+
+    fig10, ax10 = plt.subplots()
+    sns.lineplot(data=monthly_mtl_data, x='Month-Year', y='MTL (ft)', marker='o', label='Average MTL', ax=ax10)
+    ax10.set_title('Time Series of Average MTL (ft) by Month-Year', fontsize=10)
+    ax10.set_xlabel('Month-Year', fontsize=12)
+    ax10.set_ylabel('MTL (ft)', fontsize=12)
+    plt.xticks(rotation=45)
+    plt.grid(True)
+    st.pyplot(fig10)
+
+    # Visualization 2: Histogram of Lowest Water Levels
+    st.subheader("Histogram of Lowest Water Levels")
+    st.write("""
+    The histogram illustrates the distribution of the lowest water levels, forming a near-perfect bell-shaped curve indicative of a normal distribution. The majority of the data is concentrated around the mean, approximately -0.25 feet, with frequencies tapering off symmetrically on either side. This suggests that most low water levels fall within a narrow range, while extreme values are rare, reflecting a balanced and predictable pattern in the dataset's lower bounds.
+    """)
     fig2, ax2 = plt.subplots()
-    data['MSL (ft)'].plot(kind='hist', bins=20, color='beige', edgecolor='black', ax=ax2)
-    plt.title('Frequency Distribution of Mean Sea Level (ft)')
-    plt.xlabel('MSL (ft)')
-    plt.ylabel('Frequency')
+    sns.histplot(data['Lowest (ft)'], kde=True, color='orange', bins=20, ax=ax2)
+    ax2.set_title('Distribution of Lowest Water Levels')
+    ax2.set_xlabel('Lowest (ft)')
+    ax2.set_ylabel('Frequency')
+    plt.tight_layout()
     st.pyplot(fig2)
 
-    # Highest vs. Lowest Tide
-    st.subheader("Highest vs. Lowest Tide")
+    # Visualization 3: Boxplot of Highest Levels by Station
+    st.subheader("Boxplot of Highest Levels by Station")
+    st.write("""
+    The boxplot compares the highest water levels across five stations, illustrating variations in medians, interquartile ranges, and outliers. Each station shows distinct central tendencies, with station 1619910 exhibiting the highest variability and numerous outliers, suggesting significant fluctuations. Stations 1611400, 1612340, and 1612480 display relatively similar ranges and medians, whereas station 1617433 has a slightly elevated median but fewer outliers. This visualization highlights the differing water level behaviors among stations, indicating possible location-specific factors influencing water levels.
+    """)
     fig3, ax3 = plt.subplots()
-    data.plot.scatter(x='Highest', y='Lowest (ft)', ax=ax3)
-    plt.title('Highest Tide vs Lowest Tide')
-    plt.xlabel('Highest Tide (ft)')
-    plt.ylabel('Lowest Tide (ft)')
+    sns.boxplot(x='station_id', y='Highest', data=data, palette='coolwarm', ax=ax3)
+    ax3.set_title('Boxplot of Highest Water Levels by Station')
+    ax3.set_xlabel('Station ID')
+    ax3.set_ylabel('Highest (ft)')
+    plt.tight_layout()
     st.pyplot(fig3)
 
-    # Tidal Components Over Time
-    st.subheader("Tidal Components Over Time")
+    # Visualization 4: Scatter Plot of MSL vs MHW
+    st.subheader("Scatter Plot of MSL vs. MHW")
+    st.write("""
+    The scatter plot of MSL (Mean Sea Level) vs. MHW (Mean High Water) reveals a strong positive linear relationship, indicating that as MSL increases, MHW rises proportionally across all stations. The color-coded points highlight station-specific clusters, with stations like 1619910 showing lower ranges for both metrics and others like 1617433 exhibiting higher values. While some stations, such as 1611400 and 1612340, show overlapping patterns, subtle variations suggest distinct tidal behaviors. This strong correlation underscores the importance of both MSL and MHW as critical features for predicting tidal heights, and the distinct clustering emphasizes the need for station-specific encoding to capture these variations effectively in predictive models.
+    """)
     fig4, ax4 = plt.subplots()
-    data.plot(x='Datetime', y=['MHHW (ft)', 'MHW (ft)', 'MLW (ft)'], ax=ax4)
-    plt.title('Mean Water Levels Over Time')
-    plt.xlabel('Datetime')
-    plt.ylabel('Mean Water Level (ft)')
+    sns.scatterplot(x='MSL (ft)', y='MHW (ft)', hue='station_id', palette='viridis', data=data, alpha=0.6, ax=ax4)
+    ax4.set_title('Scatter Plot of MSL vs. MHW')
+    ax4.set_xlabel('MSL (ft)')
+    ax4.set_ylabel('MHW (ft)')
+    plt.tight_layout()
     st.pyplot(fig4)
 
-    # # Identifying Cyclic or Seasonal Behavior
-    # st.subheader("Identifying Cyclic or Seasonal Behavior")
-    # fig5, ax5 = plt.subplots()
-    # pd.plotting.autocorrelation_plot(data['Highest'], ax=ax5)
-    # plt.title('Autocorrelation Plot of Highest Tide')
-    # st.pyplot(fig5)
+    # Visualization 5: Pairplot of Selected Features
+    st.subheader("Pairplot of Selected Features")
+    st.write("""
+    The pairplot for selected features—Highest, Lowest (ft), MHW (Mean High Water), and MSL (Mean Sea Level)—provides a comprehensive view of relationships between these variables. The diagonal plots represent the distribution of each feature, revealing that Highest and MHW exhibit slightly skewed distributions, while Lowest and MSL are more normally distributed. The off-diagonal scatter plots demonstrate strong positive correlations between MSL and MHW, and between Highest and MHW, indicating these features are highly interdependent. Meanwhile, the relationship between Lowest and other features is less pronounced, suggesting a weaker contribution to the target variable. This visualization highlights the critical features driving tidal predictions and suggests which variables are most relevant for inclusion in machine learning models.
+    """)
+    selected_features = ['Highest', 'Lowest (ft)', 'MHW (ft)', 'MSL (ft)']
+    pairplot_fig = sns.pairplot(data[selected_features].dropna(), diag_kind='kde', plot_kws={'alpha': 0.6})
+    pairplot_fig.fig.suptitle('Pairplot for Selected Features', y=1.02)
+    st.pyplot(pairplot_fig)
 
-    # Detecting Seasonality and Trends Over Time
-    st.subheader("Detecting Seasonality and Trends Over Time")
-    fig6, ax6 = plt.subplots()
-    pd.plotting.lag_plot(data['Highest'], ax=ax6)
-    plt.title('Lag Plot of Highest Tide')
+    # Visualization 6: Heatmap of Correlations
+    st.subheader("Heatmap of Correlations")
+    st.write("""
+    The heatmap of the correlation matrix highlights the relationships among the features in the dataset, with correlation values ranging from -1 (strong negative correlation) to +1 (strong positive correlation). Highest shows the strongest positive correlations with MHHW (ft) (0.90), MHW (ft) (0.83), and MSL (ft) (0.75), indicating these features are critical predictors of tidal heights. Similarly, MHW (ft) and MSL (ft) are highly correlated with each other (0.95), reflecting their interdependence in tidal dynamics. Features like Lowest (ft) and MLLW (ft) have weaker correlations with Highest (0.22 and 0.40, respectively), suggesting they contribute less directly to the target. Station-specific features (station_id) exhibit moderate negative correlations with Highest, while temporal features like Year (0.25) and Month (0.12) show relatively weak relationships. This heatmap provides valuable insights into feature selection, emphasizing the importance of tidal metrics for predicting tidal heights while also capturing potential redundancies due to multicollinearity.
+    """)
+    numeric_features = data.select_dtypes(include=np.number).columns
+    correlation_matrix = data[numeric_features].corr()
+    fig6, ax6 = plt.subplots(figsize=(10, 6))
+    sns.heatmap(correlation_matrix, annot=True, fmt='.2f', cmap='coolwarm', cbar=True, ax=ax6)
+    ax6.set_title('Heatmap of Correlations')
+    plt.tight_layout()
     st.pyplot(fig6)
 
-    from statsmodels.graphics.tsaplots import plot_acf
+    # Visualization 7: Barplot for Observations per Station
+    st.subheader("Barplot of Observations per Station")
+    st.write("""
+    The bar chart displays the count of observations for each station, illustrating the distribution of records across the dataset. Stations 1611400, 1612340, 1612480, and 1619910 each have similar observation counts, ranging between 522 and 537, indicating a relatively balanced dataset for these stations. However, 1617433 has significantly fewer records (399), which could introduce a slight imbalance in the dataset. This disparity might affect the model's ability to generalize well for 1617433, as fewer observations provide less information for learning station-specific patterns. Overall, the chart highlights the importance of considering data balance when training models, particularly in multi-station scenarios.
+    """)
+    station_counts = data['station_id'].value_counts()
+    fig7, ax7 = plt.subplots()
+    sns.barplot(x=station_counts.index, y=station_counts.values, palette='magma', ax=ax7)
+    ax7.set_title('Count of Observations per Station')
+    ax7.set_xlabel('Station ID')
+    ax7.set_ylabel('Count')
+    plt.tight_layout()
+    st.pyplot(fig7)
 
-#     Identifying Cyclic or Seasonal Behavior
-#     st.subheader("Identifying Cyclic or Seasonal Behavior")
-#     fig5, ax5 = plt.subplots()
-#     plot_acf(data['Highest'], ax=ax5)
-#     plt.title('Autocorrelation Plot of Highest Tide')
-#     st.pyplot(fig5)
-    # Mean Tide Levels by Month
-    st.subheader("Mean Tide Levels by Month")
-    data['Month'] = data['Datetime'].dt.month
+    # Visualization 8: KDE Plot for MLLW
+    st.subheader("KDE Plot for MLLW")
+    st.write("""
+    The KDE (Kernel Density Estimation) plot of MLLW (Mean Lower Low Water) shows the distribution of this tidal metric across the dataset. The distribution is unimodal, with a peak around 0 ft, indicating that most of the MLLW values are concentrated near this central value. The density decreases symmetrically on either side of the peak, suggesting a relatively normal distribution with a slight right skew. This implies that higher MLLW values are slightly more common than lower ones, but extreme values in either direction are rare. The KDE plot provides valuable insights into the central tendency and spread of MLLW, helping to identify its variability and role as a feature in predictive models.
+    """)
     fig8, ax8 = plt.subplots()
-    data.groupby('Month')['MTL (ft)'].mean().plot(kind='bar', ax=ax8)
-    plt.title('Mean Tide Level by Month')
-    plt.xlabel('Month')
-    plt.ylabel('Mean Tide Level (ft)')
+    sns.kdeplot(data['MLLW (ft)'], fill=True, color='purple', ax=ax8)
+    ax8.set_title('KDE Plot of MLLW (ft)')
+    ax8.set_xlabel('MLLW (ft)')
+    ax8.set_ylabel('Density')
+    plt.tight_layout()
     st.pyplot(fig8)
 
-    # Tidal Levels with Seasonal Indicators
-    st.subheader("Tidal Levels with Seasonal Indicators")
-    data['Season'] = data['Datetime'].dt.month % 12 // 3 + 1
+    # Visualization 9: Pie Chart of Proportions of Average MTL by Station
+    st.subheader("Pie Chart of Proportions of Average MTL by Station")
+    st.write("""
+    The pie chart illustrates the proportion of the average Mean Tide Level (MTL) contributed by each station in the dataset. Station 1612480 accounts for the largest share, contributing 24.7% of the total MTL, while station 1619910 contributes the smallest share at 16.2%. Stations 1611400, 1612340, and 1617433 contribute relatively balanced proportions, ranging between 19.1% and 20.7%. This distribution reflects variations in tide behavior across stations, with some stations experiencing higher average tide levels than others. The visualization effectively highlights the station-specific differences in MTL, which are essential for understanding and modeling tidal dynamics at these locations.
+    """)
+    mtl_means = data.groupby('station_id')['MTL (ft)'].mean()
     fig9, ax9 = plt.subplots()
-    sns.lineplot(x='Datetime', y='Highest', hue='Season', data=data, ax=ax9)
-    plt.title('Highest Tide Over Time by Season')
-    plt.xlabel('Datetime')
-    plt.ylabel('Highest Tide (ft)')
+    mtl_means.plot.pie(autopct='%1.1f%%', startangle=140, cmap='cool', explode=[0.05] * len(mtl_means), ax=ax9)
+    ax9.set_title('Proportion of Average Mean Tide Level by Station ID')
+    ax9.set_ylabel('')
+    plt.tight_layout()
     st.pyplot(fig9)
-
 
 # Models Implemented Section
 elif section == "Models Implemented":
