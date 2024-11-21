@@ -470,15 +470,9 @@ elif section == "Models Implemented":
 elif section == "Team":
     st.header("Team Members")
     st.write("""
-    - Team Member 1: [Insert Name]
-    - Team Member 2: [Insert Name]
-    - Team Member 3: [Insert Name]
+    - Team Member 1: Varun Reddy Mamidala
+    - Team Member 2: Tanvi Nimbalkar
+    - Team Member 3: Dnyaneshwari Rakshe
     """)
 
-    # You can also include team roles or contributions
-    st.write("""
-    ### Team Contributions
-    - Team Member 1: Data Cleaning and Preprocessing
-    - Team Member 2: Model Implementation and Evaluation
-    - Team Member 3: Visualization and Presentation
-    """)
+    # You can also include team roles or contribution
