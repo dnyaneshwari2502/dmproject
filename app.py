@@ -254,7 +254,7 @@ By carefully splitting the data, the model evaluation process remains robust, al
 
 
 # Load your dataset
-data = pd.read_csv('https://github.com/VarunnReddyy/dmproject/blob/main/combined_data_5_stations.csv', parse_dates=['Date', 'Time (GMT)'])
+data = pd.read_csv('combined_data_5_stations.csv', parse_dates=['Date', 'Time (GMT)'])
 
 # Ensure that 'Date' and 'Time (GMT)' columns exist and are properly formatted as strings
 data['Date'] = data['Date'].astype(str)
