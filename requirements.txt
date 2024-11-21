@@ -4,4 +4,3 @@ pandas
 seaborn
 statsmodels
 numpy
-os
