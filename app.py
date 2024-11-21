@@ -1,13 +1,13 @@
 import os
-st.write(f"Current working directory: {os.getcwd()}")
-st.write(f"Files in the directory: {os.listdir(os.getcwd())}")
+
 
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt 
 import seaborn as sns  # Import for seaborn visualizations
 import numpy as np
-
+st.write(f"Current working directory: {os.getcwd()}")
+st.write(f"Files in the directory: {os.listdir(os.getcwd())}")
 # Set page config
 st.set_page_config(page_title="Sea Level Rise Analysis", page_icon="🌊", layout="wide")
 
