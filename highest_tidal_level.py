@@ -219,15 +219,73 @@ def display():
 
 
     with st.expander("Model 4: LSTM Neural Network"):
-        st.write("""
-        - A deep learning model capturing sequential dependencies with:
-          - LSTM layer (64 units)
-          - Dropout (20%)
-          - Dense layer (32 units)
-        - Performance:
-          - MSE: 0.0373
-          - MAE: 0.1377
-        """)
+            st.subheader("LSTM Neural Network")
+            st.write("""
+            The LSTM (Long Short-Term Memory) Neural Network is a specialized deep learning model designed to handle sequential data. 
+            It excels in capturing temporal dependencies and long-term patterns, making it particularly suitable for predicting tidal 
+            levels based on historical trends. LSTM's architecture includes memory cells that store information across time steps, 
+            allowing it to identify complex relationships and trends in time-series data.
+            """)
+    
+            st.subheader("Model Workflow")
+            st.write("""
+            1. **Preprocessing and Feature Engineering:**  
+            The data was preprocessed to include relevant features such as temporal attributes (e.g., Month, Day, Hour) and tidal metrics (e.g., MHHW, MHW). 
+            These were scaled using MinMaxScaler to ensure efficient training of the LSTM model. The input data was reshaped into a 3D format to meet the requirements of the LSTM architecture.
+            2. **Model Architecture:**  
+            - **LSTM Layer (64 Units):** Captures sequential patterns and dependencies across time steps.  
+            - **Dropout Layer (20%):** Reduces overfitting by deactivating a fraction of neurons during training.  
+            - **Dense Layer (32 Units):** Learns nonlinear relationships and bridges the LSTM outputs to the final prediction layer.  
+            - **Output Layer:** Contains a single neuron with a linear activation function to predict the highest tidal level.  
+            3. **Training:**  
+            The model was trained for 50 epochs with a batch size of 32, using the Adam optimizer for adaptive learning and MSE as the loss function. 
+            A validation set (20% of the data) was used to monitor performance and prevent overfitting.
+            """)
+    
+            st.subheader("Performance Metrics")
+            st.write("""
+            The LSTM model demonstrated strong performance in predicting tidal levels:
+            - **Mean Squared Error (MSE): 0.0373**  
+            Indicates the model's ability to minimize large prediction errors.  
+            - **Mean Absolute Error (MAE): 0.1377**  
+            Reflects the average magnitude of prediction errors, highlighting the model's reliability.
+            """)
+    
+            st.subheader("Strengths of the LSTM Model")
+            st.write("""
+            1. **Capturing Sequential Patterns:**  
+            The LSTM layer effectively models time-dependent relationships, capturing trends and seasonality in tidal data.  
+            2. **Flexibility:**  
+            The architecture can be adapted to include additional features or more complex patterns.  
+            3. **Regularization:**  
+            Dropout layers mitigate overfitting, ensuring robust generalization to unseen data.
+            """)
+    
+            st.subheader("Limitations of the LSTM Model")
+            st.write("""
+            1. **Computational Resources:**  
+            LSTMs require significant computational power and memory, especially for large datasets or complex architectures.  
+            2. **Sensitivity to Preprocessing:**  
+            Proper scaling, encoding, and data preparation are crucial for optimal performance.  
+            3. **Risk of Overfitting:**  
+            Without regularization and proper monitoring, the model can overfit, especially with limited data.
+            """)
+    
+            st.subheader("Use Cases")
+            st.write("""
+            The LSTM model is ideal for tasks involving:
+            - Time-series data with strong sequential dependencies.
+            - Applications where historical trends and patterns significantly impact predictions.
+            - Scenarios requiring highly accurate temporal predictions, such as tidal forecasting, energy demand forecasting, or stock market analysis.
+            """)
+    
+            st.subheader("Comparison with Other Models")
+            st.write("""
+            Compared to other models, the LSTM Neural Network uniquely excels at capturing sequential dependencies. While models 
+            like Decision Tree and Random Forest focus on feature relationships, LSTM leverages temporal patterns to enhance prediction accuracy. 
+            However, it requires more computational resources and preprocessing compared to simpler models, making it suitable for problems where sequential dependencies are critical.
+            """)
+
 
   # Combined Visualizations and Model Comparison in Collapsible Section
     with st.expander("Visualizations and Model Comparison"):
