@@ -464,19 +464,19 @@ elif section == "Models Implemented":
     A Random Forest model to capture more complex relationships in the data.
     """)
 
-    # Code for Random Forest Regression
-    st.code("""
-    from sklearn.ensemble import RandomForestRegressor
+    # # Code for Random Forest Regression
+    # st.code("""
+    # from sklearn.ensemble import RandomForestRegressor
 
-    # Create a Random Forest model and fit it
-    rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
-    rf_model.fit(X_train, y_train)
+    # # Create a Random Forest model and fit it
+    # rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+    # rf_model.fit(X_train, y_train)
 
-    # Make predictions and evaluate the model
-    rf_pred = rf_model.predict(X_test)
-    rf_mse = mean_squared_error(y_test, rf_pred)
-    st.write(f'Random Forest Mean Squared Error: {rf_mse:.2f}')
-    """)
+    # # Make predictions and evaluate the model
+    # rf_pred = rf_model.predict(X_test)
+    # rf_mse = mean_squared_error(y_test, rf_pred)
+    # st.write(f'Random Forest Mean Squared Error: {rf_mse:.2f}')
+    # """)
 
 # Team Section
 elif section == "Team":
