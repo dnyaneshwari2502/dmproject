@@ -458,11 +458,11 @@ elif section == "Models Implemented":
     elif st.session_state["page"] == "seasonal_temporal_analysis":
         import seasonal_temporal_analysis
         seasonal_temporal_analysis.display()
-    # Placeholder for additional models
-    st.subheader("Model 2: Random Forest Regression")
-    st.write("""
-    A Random Forest model to capture more complex relationships in the data.
-    """)
+    # # Placeholder for additional models
+    # st.subheader("Model 2: Random Forest Regression")
+    # st.write("""
+    # A Random Forest model to capture more complex relationships in the data.
+    # """)
 
     # # Code for Random Forest Regression
     # st.code("""
