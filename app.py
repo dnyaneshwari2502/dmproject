@@ -410,42 +410,54 @@ if section == "Data Visualizations":
     plt.tight_layout()
     st.pyplot(fig9)
 
-# Models Implemented Section
 elif section == "Models Implemented":
-    st.header("Models Implemented")
-    st.write("""
-    In this section, we discuss the various models that have been implemented to predict sea level rise.
-    """)
+    # st.title("Models Implemented")
+    # st.write("""
+    # In this section, we present the three main objectives for which models were implemented. 
+    # Each objective addresses a specific aspect of the prediction task and utilizes different modeling techniques.
+    # """)
+    # Initialize session state for navigation
+    if "page" not in st.session_state:
+        st.session_state["page"] = "models_implemented"  
 
-    # Linear Regression Model
-    st.subheader("Model 1: Linear Regression")
-    st.write("""
-    A simple linear regression model that predicts sea level rise based on various tidal attributes.
-    """)
+    # Debugging: Print current page
+    # st.write(f"Current page: {st.session_state['page']}")
 
-    # Code for Linear Regression
-    st.code("""
-    from sklearn.model_selection import train_test_split
-    from sklearn.linear_model import LinearRegression
-    from sklearn.metrics import mean_squared_error
+    # Models Implemented Section
+    if st.session_state["page"] == "models_implemented":
+        st.header("Models Implemented")
+        st.write("""
+        In this section, we present the three main objectives for which models were implemented. 
+        Each objective addresses a specific aspect of the prediction task and utilizes different modeling techniques.
+        """)
 
-    # Define features and target variable
-    X = new_dataset[['MHHW (ft)', 'MHW (ft)', 'MSL (ft)']]  # Features
-    y = new_dataset['Highest']  # Target variable (assuming 'Highest' as the target)
+        # Navigation buttons
+        if st.button("Highest Tidal Level Prediction"):
+            st.session_state["page"] = "highest_tidal_level"
+            st.rerun()
 
-    # Split the dataset into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        if st.button("Mean Sea Level Prediction"):
+            st.session_state["page"] = "mean_sea_level"
+            st.rerun()
 
-    # Create a Linear Regression model and fit it
-    model = LinearRegression()
-    model.fit(X_train, y_train)
+        if st.button("Seasonal & Temporal Analysis"):
+            st.session_state["page"] = "seasonal_temporal_analysis"
+            st.rerun()
 
-    # Make predictions and evaluate the model
-    y_pred = model.predict(X_test)
-    mse = mean_squared_error(y_test, y_pred)
-    st.write(f'Mean Squared Error: {mse:.2f}')
-    """)
+    # Page: Highest Tidal Level Prediction
+    elif st.session_state["page"] == "highest_tidal_level":
+        import highest_tidal_level
+        highest_tidal_level.display()
 
+    # Page: Mean Sea Level Prediction
+    elif st.session_state["page"] == "mean_sea_level":
+        import mean_sea_level
+        mean_sea_level.display()
+
+    # Page: Seasonal & Temporal Analysis
+    elif st.session_state["page"] == "seasonal_temporal_analysis":
+        import seasonal_temporal_analysis
+        seasonal_temporal_analysis.display()
     # Placeholder for additional models
     st.subheader("Model 2: Random Forest Regression")
     st.write("""
