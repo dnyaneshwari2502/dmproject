@@ -102,7 +102,7 @@ if section == "Introduction":
     """)
 
     # Image section without `class_`
-    st.image("image1.jpeg", caption="Example Image", width=150, use_column_width='auto')
+    # st.image("image1.jpeg", caption="Example Image", width=150, use_column_width='auto')
 
 # Data Collection and Cleaning section
 elif section == "Data Collection and Cleaning":
