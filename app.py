@@ -126,7 +126,7 @@ elif section == "Data Collection and Cleaning":
         """)
 
         # Image inside the collapsible section for data collection
-        st.image("dataset_image.jpeg", caption="detailed dataset", width=400, use_column_width='auto')
+        st.image("updated_dataset.jpeg", caption="detailed dataset", width=400, use_column_width='auto')
 
     # Collapsible section for dataset description and structure with image inside
     with st.expander("Dataset Description and Structure"):
@@ -178,7 +178,7 @@ elif section == "Data Collection and Cleaning":
         """)
 
         # Image inside the collapsible section for dataset description
-        st.image("dataset_image.jpeg", caption="Dataset Snapshot", width=400, use_column_width='auto')
+        st.image("updated_dataset.jpeg", caption="Dataset Snapshot", width=400, use_column_width='auto')
 
 
     collapsible_section("Handling Missing Values", """
